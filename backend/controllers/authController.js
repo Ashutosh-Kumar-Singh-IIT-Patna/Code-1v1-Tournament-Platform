@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    console.log("login successful from backend", user);
+    // console.log("login successful from backend", user);
     // Store user details in session
     req.session.userId = user._id;
     req.session.userName = user.name;

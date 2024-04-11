@@ -31,9 +31,11 @@ const Room = () => {
         
         setRoomName(name);
         setParticipants(participants);
-  
-        const gamer = participants.find(participant => participant.id === userID);
-        if(gamer) setGamerName(gamer.name);
+
+        if(gamerName===""){
+          const gamer = participants.find(participant => participant.id === userID);
+          if(gamer) setGamerName(gamer.name);
+        }
         
       } catch (error) {
         console.error("Error fetching room details:", error);
@@ -45,7 +47,8 @@ const Room = () => {
   
   return (
     <div>
-      <h1>Hello, {gamerName}! Welcome to "{roomName}" !!</h1>
+      <h1>Hello, {gamerName}</h1>
+      <h1>Welcome to "{roomName}"</h1> 
       <h4>Share Room ID with others to join: {roomId} </h4>
       <h2>Participants:</h2>
       <ul>

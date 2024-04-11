@@ -42,6 +42,7 @@ app.use(
 app.post("/api/auth/signup", authController.signup);
 app.post("/api/auth/login", authController.login);
 app.get("/api/auth/getUserName", authController.getUserName);
+
 // Routes for room operations
 app.post("/api/rooms/create", roomController.createRoom);
 app.post("/api/rooms/join", roomController.joinRoom);

@@ -1,17 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useAuth } from "./AuthContext"; // Import useAuth hook from AuthContext
+import { useEffect } from "react";
 
 const JoinRoom = () => {
   const [roomId, setRoomId] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName,setUserName] = useState("");
+  const [userID,setUserID] = useState("");
+  let {user} = useAuth();
   const navigate = useNavigate(); // Replace useHistory with useNavigate
+
+  useEffect(() => {
+    user = JSON.parse(localStorage.getItem("user"));
+    setUserID(user.id);
+    // Check if user data exists in context
+    if (!user) {
+      // If user data does not exist, redirect to login page
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   const handleJoinRoom = () => {
     axios
-      .post("http://localhost:5000/api/rooms/join", { roomId, userName })
+      .post("http://localhost:5000/api/rooms/join", { roomId, userName, userID })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+        // console.log("joining room");
         // Redirect to room page
         navigate(`/room/${roomId}`); // Use navigate function to redirect
       })

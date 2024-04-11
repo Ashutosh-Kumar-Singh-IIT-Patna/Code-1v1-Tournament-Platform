@@ -22,7 +22,6 @@ const CreateRoom = () => {
   }, [user, navigate]);
 
   const handleCreateRoom = () => {
-    console.log(roomName, userName);
     axios
       .post("http://localhost:5000/api/rooms/create", { roomName, userName, userID })
       .then((response) => {

@@ -17,12 +17,12 @@ exports.createRoom = async (req, res) => {
 // Controller for joining an existing room
 exports.joinRoom = async (req, res) => {
     try {
-        const { roomId, userName } = req.body;
+        const { roomId, userName, userID } = req.body;
         const room = await Room.findOne({ roomId });
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        room.participants.push({ name: userName });
+        room.participants.push({ name: userName, id: userID });
         await room.save();
         res.status(200).json({ roomId, message: 'Joined room successfully' });
     } catch (error) {
