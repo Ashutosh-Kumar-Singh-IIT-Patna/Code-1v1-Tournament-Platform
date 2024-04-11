@@ -1,30 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useAuth } from "./AuthContext"; // Import useAuth hook from AuthContext
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate hook from react-router-dom
 
 const Home = () => {
-  const [userName, setUserName] = useState('');
+  let { user, logout } = useAuth(); // Access user data and logout function from context
+  const navigate = useNavigate(); // Get navigate function from react-router-dom
 
-  // useEffect(() => {
-  //   // Fetch user name from server upon component mount
-  //   axios.get('http://localhost:5000/api/auth/getUserName')
-  //     .then(response => {
-  //       setUserName(response.data.userName);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching user name:', error);
-  //       // Handle error (e.g., display error message)
-  //     });
-  // }, []);
+  useEffect(() => {
+    user = JSON.parse(localStorage.getItem("user"));
+    // Check if user data exists in context
+    if (!user) {
+      // If user data does not exist, redirect to login page
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  const handleLogout = () => {
+    // Call logout function to clear user session data
+    logout();
+    // Redirect the user to the login page
+    navigate("/login");
+  };
 
   return (
     <div>
-      <h1>Welcome, {userName}!</h1>
+      {user && <h1>Welcome, {user.name}!</h1>}{" "}
+      {/* Display username if available */}
       <div>
         <Link to="/create-room">Create Room</Link>
       </div>
       <div>
         <Link to="/join-room">Join Room</Link>
+      </div>
+      <div>
+        {/* Logout link */}
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );
