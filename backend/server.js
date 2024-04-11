@@ -45,9 +45,8 @@ app.get("/api/auth/getUserName", authController.getUserName);
 // Routes for room operations
 app.post("/api/rooms/create", roomController.createRoom);
 app.post("/api/rooms/join", roomController.joinRoom);
-// app.get("/api/rooms/getRoomName",)
 app.post("/api/rooms/leave", roomController.leaveRoom);
-app.get("/api/rooms/:roomId/participants", roomController.getParticipants);
+app.get("/api/rooms/getRoomDetails", roomController.getRoomDetails);
 
 // Start server
 const PORT = 5000;
