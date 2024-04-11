@@ -1,40 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
-const Room = ({ match }) => {
-  const [userName, setUserName] = useState('');
+const Room = () => {
+  const { roomId } = useParams(); // Get the roomId from the URL params
+  const [userName, setUserName] = useState("");
   const [participants, setParticipants] = useState([]);
-  const socket = io();
+  let user = useAuth();
 
   useEffect(() => {
     // Fetch user name from server upon component mount
-    axios.get('http://localhost:5000/api/auth/getUserName')
-      .then(response => {
+    axios
+      .get("http://localhost:5000/api/auth/getUserName")
+      .then((response) => {
         setUserName(response.data.userName);
       })
-      .catch(error => {
-        console.error('Error fetching user name:', error);
+      .catch((error) => {
+        console.error("Error fetching user name:", error);
         // Handle error (e.g., display error message)
       });
-
-    // Join the room upon component mount
-    socket.emit('joinRoom', { roomId: match.params.roomId, userName });
-
-    // Listen for participants list from the server
-    socket.on('participantsList', ({ participants }) => {
-      setParticipants(participants);
-    });
-
-    return () => {
-      // Leave the room upon component unmount
-      socket.emit('leaveRoom', { roomId: match.params.roomId, userName });
-    };
-  }, [match.params.roomId, userName, socket]);
+  }, [roomId, userName]);
 
   return (
     <div>
-      <h1>Hello, {userName}!</h1>
+      <h1>Hello, {user.name}!</h1>
       <h2>Participants:</h2>
       <ul>
         {participants.map((participant, index) => (
