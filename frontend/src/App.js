@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import CreateRoom from "./components/CreateRoom";
 import JoinRoom from "./components/JoinRoom";
 import Room from "./components/Room";
+import Tournament from "./components/Tournament";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/create-room" element={<CreateRoom />} />
           <Route path="/join-room" element={<JoinRoom />} />
           <Route path="/room/:roomId" element={<Room />} />
+          <Route path="/room/:roomId/tournament" element={<Tournament />} />
         </Routes>
       </Router>
     </AuthProvider>

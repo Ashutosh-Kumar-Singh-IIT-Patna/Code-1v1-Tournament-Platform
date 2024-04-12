@@ -14,6 +14,14 @@ const roomSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isStarted: {
+    type: Boolean,
+    default: false
+  },
+  players: {
+    type: [{ name: String, id: String }],
+    default: []
+  },
   participants: { type: [{ name: String, id: String }], default: [] },
   createdAt: { type: Date, default: Date.now, expires: 7200 }
 });

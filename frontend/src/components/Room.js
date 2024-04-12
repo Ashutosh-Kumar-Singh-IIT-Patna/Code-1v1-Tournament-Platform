@@ -12,6 +12,7 @@ const Room = () => {
   const [participants, setParticipants] = useState([]);
   const [isAdmin,setIsAdmin] = useState(false);
   const [admi,setAdmi] = useState("");
+  const [started,setStarted] = useState(false);
   let {user} = useAuth();
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ const Room = () => {
     const fetchRoomDetails = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/rooms/getRoomDetails", { params: { roomId } });
-        const { name, admin, participants } = response.data.room;
+        const { name, admin, participants, isStarted } = response.data.room;
 
         if(admi === ""){
           setAdmi(admin);
@@ -40,6 +41,8 @@ const Room = () => {
         if(roomName === ""){
           setRoomName(name);
         }
+
+        setStarted(isStarted);
         setParticipants(participants);
 
         if(gamerName === ""){
@@ -49,7 +52,9 @@ const Room = () => {
             setIsAdmin(true);
           }
         }
-        
+        if(started){
+          navigate(`/room/${roomId}/tournament`);
+        }
       } catch (error) {
         if (!errorShown) { // Check if the error alert has been shown
           errorShown = true; // Set the flag to true to indicate that the alert has been shown
@@ -96,13 +101,12 @@ const Room = () => {
 
   const startTournament = () => {
     axios
-      .post("http://localhost:5000/api/rooms/startTournament", {  roomId  } )
+      .post("http://localhost:5000/api/tournament/startTournament", {  roomId  } )
       .then((response) => {
-        navigate(`/${roomId}/tournament`); // Use navigate function to redirect
+        navigate(`/room/${roomId}/tournament`); // Use navigate function to redirect
       })
       .catch((error) => {
-        console.error("Error deleting room:", error);
-        // Handle error (e.g., display error message)
+        console.error("Error starting tournament:", error);
       });
   };
   

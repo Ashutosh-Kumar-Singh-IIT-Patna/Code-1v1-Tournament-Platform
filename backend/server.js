@@ -7,6 +7,7 @@ const User = require("./models/User");
 const Room = require("./models/Room");
 const authController = require("./controllers/authController");
 const roomController = require("./controllers/roomController");
+const tourController = require("./controllers/tourController");
 const cors = require("cors");
 
 // Initialize Express app
@@ -49,6 +50,9 @@ app.post("/api/rooms/join", roomController.joinRoom);
 app.post("/api/rooms/leave", roomController.leaveRoom);
 app.get("/api/rooms/getRoomDetails", roomController.getRoomDetails);
 app.delete("/api/rooms/deleteRoom", roomController.deleteRoom);
+
+//Routes for tournament
+app.post("/api/tournament/startTournament", tourController.startTournament);
 
 // Start server
 const PORT = 5000;
