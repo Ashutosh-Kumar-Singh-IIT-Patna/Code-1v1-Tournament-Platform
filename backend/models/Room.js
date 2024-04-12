@@ -4,13 +4,18 @@ const roomSchema = new mongoose.Schema({
   roomId: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
+  },
+  admin: {
+    type: String,
+    required: true
   },
   participants: { type: [{ name: String, id: String }], default: [] },
+  createdAt: { type: Date, default: Date.now, expires: 7200 }
 });
 
 const Room = mongoose.model("Room", roomSchema);

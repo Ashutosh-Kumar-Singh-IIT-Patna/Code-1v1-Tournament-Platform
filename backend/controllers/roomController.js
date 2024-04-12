@@ -5,7 +5,7 @@ exports.createRoom = async (req, res) => {
     try {
         const { roomName, userName, userID } = req.body;
         const roomId = generateRoomId(); // Generate a random room ID
-        const newRoom = new Room({ roomId, name: roomName, participants: [{ name: userName, id: userID }] });
+        const newRoom = new Room({ roomId, name: roomName, admin: userID, participants: [{ name: userName, id: userID }] });
         await newRoom.save();
         res.status(201).json({ roomId, message: 'Room created successfully' });
     } catch (error) {
@@ -22,7 +22,12 @@ exports.joinRoom = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        room.participants.push({ name: userName, id: userID });
+        const isUserInParticipants = await room.participants.some(participant => participant.id === userID);
+        
+        if(!isUserInParticipants){
+            room.participants.push({ name: userName, id: userID });
+        }
+        
         await room.save();
         res.status(200).json({ roomId, message: 'Joined room successfully' });
     } catch (error) {
@@ -34,12 +39,12 @@ exports.joinRoom = async (req, res) => {
 // Controller for leaving a room
 exports.leaveRoom = async (req, res) => {
     try {
-        const { roomId, userName } = req.body;
+        const { roomId, userID } = req.body;
         const room = await Room.findOne({ roomId });
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        room.participants = room.participants.filter(participant => participant.name !== userName);
+        room.participants = room.participants.filter(participant => participant.id !== userID);
         await room.save();
         res.status(200).json({ roomId, message: 'Left room successfully' });
     } catch (error) {
@@ -67,3 +72,20 @@ exports.getRoomDetails = async (req, res) => {
 const generateRoomId = () => {
     return Math.random().toString(36).substr(2, 9);
 };
+
+exports.deleteRoom = async (req,res) => {
+
+    const { roomId } = req.body;
+    
+    try {
+        const deletedRoom = await Room.deleteOne({roomId});
+
+        if (!deletedRoom) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+        res.status(200).json({ message: 'Room deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}

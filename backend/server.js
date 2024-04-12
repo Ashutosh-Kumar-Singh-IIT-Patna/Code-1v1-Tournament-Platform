@@ -48,6 +48,7 @@ app.post("/api/rooms/create", roomController.createRoom);
 app.post("/api/rooms/join", roomController.joinRoom);
 app.post("/api/rooms/leave", roomController.leaveRoom);
 app.get("/api/rooms/getRoomDetails", roomController.getRoomDetails);
+app.delete("/api/rooms/deleteRoom", roomController.deleteRoom);
 
 // Start server
 const PORT = 5000;
