@@ -53,6 +53,7 @@ app.delete("/api/rooms/deleteRoom", roomController.deleteRoom);
 
 //Routes for tournament
 app.post("/api/tournament/startTournament", tourController.startTournament);
+app.post("/api/tournament/getTournamentDetails", tourController.getTournamentDetails);
 
 // Start server
 const PORT = 5000;

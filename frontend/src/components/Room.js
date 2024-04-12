@@ -53,6 +53,7 @@ const Room = () => {
           }
         }
         if(started){
+          console.log("tournament started");
           navigate(`/room/${roomId}/tournament`);
         }
       } catch (error) {
@@ -70,7 +71,7 @@ const Room = () => {
 
     return () => clearInterval(interval); // Clean up the interval
 
-  }, [userID]);
+  }, [userID,started]);
 
   const handleLeaveRoom = () => {
     axios
