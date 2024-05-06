@@ -9,6 +9,9 @@ import CreateRoom from "./components/CreateRoom";
 import JoinRoom from "./components/JoinRoom";
 import Room from "./components/Room";
 import Tournament from "./components/Tournament";
+import Match from "./components/Match";
+import Round from "./components/Round";
+import FinalResult from "./components/FinalResult";
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
           <Route path="/join-room" element={<JoinRoom />} />
           <Route path="/room/:roomId" element={<Room />} />
           <Route path="/room/:roomId/tournament" element={<Tournament />} />
+          <Route path="/room/:roomId/tournament/round" element={<Round />} />
+          <Route path="/room/:roomId/tournament/match" element={<Match />} />
+          <Route path="/room/:roomId/tournament/finalresult" element={<FinalResult />} />
         </Routes>
       </Router>
     </AuthProvider>

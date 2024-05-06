@@ -18,11 +18,23 @@ const roomSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  roundStarted: {
+    type: Boolean,
+    default: false
+  },
+  resultDeclared: {
+    type: Boolean,
+    default: false
+  },
   roundNo: {
     type: Number,
     default: 0
   },
   players: {
+    type: [{ name: String, id: String }],
+    default: []
+  },
+  oldPlayers: {
     type: [{ name: String, id: String }],
     default: []
   },

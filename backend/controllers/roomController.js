@@ -22,7 +22,7 @@ exports.joinRoom = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        const isUserInParticipants = await room.participants.some(participant => participant.id === userID);
+        const isUserInParticipants = room.participants.some(participant => participant.id === userID);
         
         if(!isUserInParticipants){
             room.participants.push({ name: userName, id: userID });
@@ -44,7 +44,8 @@ exports.leaveRoom = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        room.participants = room.participants.filter(participant => participant.id !== userID);
+        const parti = room.participants.filter(participant => participant.id !== userID);
+        room.participants = parti;
         await room.save();
         res.status(200).json({ roomId, message: 'Left room successfully' });
     } catch (error) {
@@ -75,9 +76,8 @@ const generateRoomId = () => {
 
 exports.deleteRoom = async (req,res) => {
 
-    const { roomId } = req.body;
-    
     try {
+        const { roomId } = req.body;
         const deletedRoom = await Room.deleteOne({roomId});
 
         if (!deletedRoom) {

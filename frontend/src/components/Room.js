@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const Room = () => {
   const { roomId } = useParams(); // Get the roomId from the URL params
-  const [gamerName, setGamerName] = useState("");
+  const [gamer, setGamer] = useState("");
   const [roomName,setRoomName] = useState("");
   const [userID,setUserID] = useState("");
   const [participants, setParticipants] = useState([]);
@@ -16,45 +16,35 @@ const Room = () => {
   let {user} = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    user = JSON.parse(localStorage.getItem("user"));
-    setUserID(user.id);
-    // Check if user data exists in context
-    if (!user) {
-      // If user data does not exist, redirect to login page
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
   let errorShown = false;
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
       try {
+        user = JSON.parse(localStorage.getItem("user"));
+        setUserID(user.id);
+        // Check if user data exists in context
+        if (!user) {
+          // If user data does not exist, redirect to login page
+          navigate("/login");
+        }
         const response = await axios.get("http://localhost:5000/api/rooms/getRoomDetails", { params: { roomId } });
-        const { name, admin, participants, isStarted } = response.data.room;
+        const { name, admin, participants, isStarted, players } = response.data.room;
 
-        if(admi === ""){
-          setAdmi(admin);
-        }
-        
-        if(roomName === ""){
-          setRoomName(name);
-        }
-
+        setAdmi(admin);
+        setRoomName(name);
         setStarted(isStarted);
         setParticipants(participants);
 
-        if(gamerName === ""){
-          const gamer = participants.find(participant => participant.id === userID);
-          setGamerName(gamer?.name);
-          if(admin === userID){
-            setIsAdmin(true);
-          }
+        const gamr = participants.find(participant => participant.id === user.id);
+        setGamer(gamr);
+        if(admin === user.id){
+          setIsAdmin(true);
         }
-        if(started){
-          console.log("tournament started");
+        const isThere = players.findIndex(player => player.id === user.id);
+        if(started && !(isThere===-1 && players.length>0)){
           navigate(`/room/${roomId}/tournament`);
+          return;
         }
       } catch (error) {
         if (!errorShown) { // Check if the error alert has been shown
@@ -67,7 +57,7 @@ const Room = () => {
 
     fetchRoomDetails();
 
-    const interval = setInterval(fetchRoomDetails, 10000); // 10000 milliseconds = 10 seconds
+    const interval = setInterval(fetchRoomDetails, 5000); // 10000 milliseconds = 10 seconds
 
     return () => clearInterval(interval); // Clean up the interval
 
@@ -113,13 +103,13 @@ const Room = () => {
   
   return (
     <div>
-      <h1>Hello, {gamerName}</h1>
+      <h1>Hello, {gamer?.name}</h1>
       <h1>Welcome to "{roomName}"</h1> 
       <h4>Share Room ID with others to join: {roomId} </h4>
       <h2>Participants:</h2>
       <ul>
         {participants?.map((participant, index) => (
-          <li key={index}>{participant.name} {participant.id===admi?(<>(Admin)</>):(<></>)}</li> // Accessing the 'name' property
+          <li key={index}>{participant.name} {participant.id===userID?(<>(You)</>):(<></>)} {participant.id===admi?(<>(Admin)</>):(<></>)}</li> // Accessing the 'name' property
         ))}
       </ul>
       
