@@ -35,6 +35,7 @@ const Signup = () => {
 
   return (
     <div>
+      <h1>Welcome to Code 1v1 Platform!</h1>
       <h1>Sign Up</h1>
       <form onSubmit={handleSignup}>
         <input

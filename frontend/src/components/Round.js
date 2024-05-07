@@ -30,7 +30,6 @@ const Round = () => {
     } else {
       const fetchData = async () => {
         try {
-          // Fetch players array from server
           const response = await axios.post("http://localhost:5000/api/tournament/getTournamentDetails", { roomId });
           const { Players, roundNo } = response.data;
           setRnd(roundNo);

@@ -4,68 +4,55 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Match = () => {
-  let { user } = useAuth(); // Access user data and logout function from context
-  const navigate = useNavigate(); // Get navigate function from react-router-dom
-  const { roomId } = useParams(); // Get the roomId from the URL params
-  const [players, setPlayers] = useState([]);
-  const [opponent, setOpponent] = useState("");
+const Round = () => {
+  let { user } = useAuth();
+  const [userID,setUserID] = useState("");
+  const navigate = useNavigate();
+  const { roomId } = useParams();
   const [gamer,setGamer] = useState("");
+  const [opponentName,setOpponentName] = useState("");
   const [rnd, setRnd] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Check if user data exists in context
-        user = JSON.parse(localStorage.getItem("user"));
-        if (!user) {
-          // If user data does not exist, redirect to login page
-          navigate("/login");
-          return;
+    user = JSON.parse(localStorage.getItem("user"));
+    setUserID(user.id);
+    if (!user) {
+      navigate("/login");
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await axios.post("http://localhost:5000/api/tournament/getTournamentDetails", { roomId });
+          const { Players, roundNo } = response.data;
+          setRnd(roundNo);
+          const userIndex = Players.findIndex(player => player.id === user.id);
+          if (userIndex === -1) {
+            console.log("Can't find user in players array");
+            return;
+          }
+          setGamer(Players[userIndex]);
+          const oppoIndex = (userIndex%2==0? userIndex+1:userIndex-1);
+          setOpponentName(Players[oppoIndex]?.name || 'Bot');
+        } catch (error) {
+          console.error('Error fetching match:', error);
         }
+      };
 
-        // Fetch players array from server
-        const response = await axios.post("http://localhost:5000/api/tournament/getTournamentDetails", { roomId });
-        const {shuffledPlayers,roundNo} = response.data;
-        setPlayers(shuffledPlayers);
-        setRnd(roundNo);
-        // Find opponent
-        const userIndex = shuffledPlayers.findIndex(player => player.id === user.id);
-        if (userIndex === -1) {
-          console.log("Can't find user in players array");
-          return;
-        }
-        const opponentIndex = userIndex % 2 === 0 ? userIndex + 1 : userIndex - 1;
-        setOpponent(shuffledPlayers[opponentIndex]);
-        setGamer(shuffledPlayers[userIndex]);
-      } catch (error) {
-        console.error('Error fetching match:', error);
-      }
-    };
-
-    fetchData();
+      fetchData();
+    }
   }, [user, navigate, roomId]);
+
 
   return (
     <>
       <div>
-        {rnd && <h1>Round No.- {rnd}</h1>}
+        {rnd && <h1>Round No. - {rnd}</h1>}
       </div>
       <div>
-        {gamer && opponent && <h1>{gamer?.name} vs {opponent?.name}</h1>}{" "}
+        <span style={{ fontSize: '30px' }}>{gamer?.name}</span> vs <span style={{ fontSize: '18px' }}>{opponentName}</span>
       </div>
-      <div>
-        <div>
-          <h2>Active Players:</h2>
-          <ul>
-            {players?.map((player, index) => (
-              <li key={index}>{player.name}</li> // Accessing the 'name' property
-            ))}
-          </ul>
-        </div>
-      </div>
+      {/* show problem statment, sample test cases and IDE */}
     </>
   );
 };
 
-export default Match;
+export default Round;
