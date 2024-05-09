@@ -29,7 +29,13 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       console.error("Error logging in:", error);
-      // Handle error (e.g., display error message)
+      if (error.response.status === 401) {
+        // Invalid email or password
+        alert("Invalid email or password!");
+      } else {
+        // Other error (e.g., server error)
+        alert("An error occurred. Please try again later.");
+      }
     }
   };
 

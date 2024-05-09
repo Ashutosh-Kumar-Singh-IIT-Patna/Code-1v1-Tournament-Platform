@@ -1,11 +1,30 @@
 const Room = require('../models/Room');
+const User = require("../models/User");
 
-function shuffleArray(array) {
+async function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+async function assignProblem(array) {
+    for( let i=0;i<array.length;i++){
+        const randomNumber=Math.floor(Math.random() * 2);
+        const paddedNumber = String(randomNumber).padStart(4, '0');
+        const ID = array[i].id;
+        const user = await User.findOne({ _id:ID });
+        user.problemID = paddedNumber;
+        await user.save();
+        i++;
+        if(i<array.length){
+            const ID1 = array[i].id;
+            const user1 = await User.findOne({ _id:ID1 });
+            user1.problemID = paddedNumber;
+            await user1.save();
+        }
+    }
 }
 
 exports.startTournament = async (req, res) => {
@@ -58,7 +77,8 @@ exports.startRound = async (req, res) => {
         room.roundStarted=true;
         room.roundNo++;
         const players=room.players;
-        const shuffledPlayers = shuffleArray(players);
+        const shuffledPlayers = await shuffleArray(players);
+        await assignProblem(shuffledPlayers);
         room.players = shuffledPlayers;
         await room.save();
         res.status(200).json({ message: 'Round started successfully'});

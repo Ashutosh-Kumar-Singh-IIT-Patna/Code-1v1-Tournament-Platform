@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import IDE from "./IDE";
+import Problem from "./Problem";
 
 const Round = () => {
   let { user } = useAuth();
@@ -12,6 +14,7 @@ const Round = () => {
   const [gamer,setGamer] = useState("");
   const [opponentName,setOpponentName] = useState("");
   const [rnd, setRnd] = useState(null);
+  const [pID,setPID] = useState("");
 
   useEffect(() => {
     user = JSON.parse(localStorage.getItem("user"));
@@ -32,6 +35,12 @@ const Round = () => {
           setGamer(Players[userIndex]);
           const oppoIndex = (userIndex%2==0? userIndex+1:userIndex-1);
           setOpponentName(Players[oppoIndex]?.name || 'Bot');
+
+          const ID=user.id;
+          const res = await axios.get("http://localhost:5000/api/tournament/match/getProblemID", { ID });
+          const {problemID} = res.data;
+          setPID(problemID);
+
         } catch (error) {
           console.error('Error fetching match:', error);
         }
@@ -44,13 +53,27 @@ const Round = () => {
 
   return (
     <>
-      <div>
+      <center>
         {rnd && <h1>Round No. - {rnd}</h1>}
-      </div>
-      <div>
+      </center>
+      <center>
         <span style={{ fontSize: '30px' }}>{gamer?.name}</span> vs <span style={{ fontSize: '18px' }}>{opponentName}</span>
-      </div>
-      {/* show problem statment, sample test cases and IDE */}
+      </center>
+      {/* {pID===""?(<></>):(<Problem problemId={pID} />)}
+      {(pID!=="" && userID!=="")?(<IDE userID={userID} problemID={pID}/>):(<></>)} */}
+      {pID === "" ? (
+          <></>
+      ) : (
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: 1 }}>
+              <Problem problemId={pID} />
+            </div>
+            <div style={{ flex: 1 }}>
+              {userID !== "" && <IDE userID={userID} problemID={pID} />}
+            </div>
+          </div>
+      )}
+
     </>
   );
 };

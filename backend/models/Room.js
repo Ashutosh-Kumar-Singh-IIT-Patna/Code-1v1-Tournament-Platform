@@ -38,8 +38,14 @@ const roomSchema = new mongoose.Schema({
     type: [{ name: String, id: String }],
     default: []
   },
+  roundStartTime: {
+    type: Date,
+  },
+  matchStartTime: {
+    type: Date,
+  },
   participants: { type: [{ name: String, id: String }], default: [] },
-  createdAt: { type: Date, default: Date.now, expires: 7200 }
+  createdAt: { type: Date, default: Date.now, expires: 10800 }
 });
 
 const Room = mongoose.model("Room", roomSchema);

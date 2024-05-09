@@ -3,11 +3,10 @@ const http = require("http");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const User = require("./models/User");
-const Room = require("./models/Room");
 const authController = require("./controllers/authController");
 const roomController = require("./controllers/roomController");
 const tourController = require("./controllers/tourController");
+const matchController = require("./controllers/matchController");
 const cors = require("cors");
 
 // Initialize Express app
@@ -58,6 +57,10 @@ app.post("/api/tournament/startRound", tourController.startRound);
 app.post("/api/tournament/leaveTournament", tourController.leaveTournament);
 app.post("/api/tournament/endTournament", tourController.endTournament);
 app.post("/api/tournament/declareResult", tourController.declareResult);
+
+//Routes for match
+app.get("/api/tournament/match/getProblemID", matchController.getProblemID);
+app.post("/api/tournament/match/submitCode", matchController.submitCode);
 
 // Start server
 const PORT = 5000;

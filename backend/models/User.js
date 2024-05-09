@@ -13,6 +13,15 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  problemID: {
+    type: String,
+  },
+  submissionTime: {
+    type: Date,
+  },
+  numberOfTestsPassed: {
+    type: Number,
   }
 });
 
