@@ -34,6 +34,7 @@ exports.startTournament = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
+        room.resultCalculated=false;
         room.isStarted = true;
         const participants = room.participants;
         room.players = participants;
@@ -47,12 +48,13 @@ exports.startTournament = async (req, res) => {
 
 exports.getTournamentDetails = async (req, res) => {
     try {
-        const { roomId } = req.body;
+        const { roomId } = req.query;
         const room = await Room.findOne({ roomId });
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
         const Players=room.players;
+        const OldPlayers=room.oldPlayers;
         const roundNo = room.roundNo;
         const RoomName=room.name;
         const Participants=room.participants;
@@ -60,7 +62,23 @@ exports.getTournamentDetails = async (req, res) => {
         const isRunning=room.isStarted;
         const isStarted=room.roundStarted;
         const isDeclared=room.resultDeclared;
-        res.status(200).json({ Participants,Players,roundNo,RoomName,Admin,isStarted,isDeclared,isRunning });
+        const isResultCalculated=room.resultCalculated;
+        res.status(200).json({ Participants,Players,OldPlayers,roundNo,RoomName,Admin,isStarted,isDeclared,isRunning,isResultCalculated });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.getTime = async (req, res) => {
+    try {
+        const { roomId } = req.query;
+        const room = await Room.findOne({ roomId });
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+        const startTime = room.roundStartTime;
+        res.status(200).json({ startTime });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -74,12 +92,14 @@ exports.startRound = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: 'Room not found' });
         }
+        room.resultCalculated=false;
         room.roundStarted=true;
         room.roundNo++;
         const players=room.players;
         const shuffledPlayers = await shuffleArray(players);
         await assignProblem(shuffledPlayers);
         room.players = shuffledPlayers;
+        room.roundStartTime = new Date();
         await room.save();
         res.status(200).json({ message: 'Round started successfully'});
     } catch (error) {

@@ -26,6 +26,10 @@ const roomSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  resultCalculated: {
+    type: Boolean,
+    default: false
+  },
   roundNo: {
     type: Number,
     default: 0
@@ -39,9 +43,6 @@ const roomSchema = new mongoose.Schema({
     default: []
   },
   roundStartTime: {
-    type: Date,
-  },
-  matchStartTime: {
     type: Date,
   },
   participants: { type: [{ name: String, id: String }], default: [] },

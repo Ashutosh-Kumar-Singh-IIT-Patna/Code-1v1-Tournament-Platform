@@ -27,7 +27,7 @@ const Tournament = () => {
         if (!user) {
           navigate("/login");
         }
-        const response = await axios.post("http://localhost:5000/api/tournament/getTournamentDetails", { roomId });
+        const response = await axios.get("http://localhost:5000/api/tournament/getTournamentDetails", { params: { roomId }});
         const { Participants, Players, roundNo, RoomName, Admin, isStarted, isDeclared, isRunning } = response.data;
         
         if(!isRunning){
@@ -150,7 +150,7 @@ const Tournament = () => {
         </ul>
       </div>
 
-      {rnd && rnd>0?<Result/>:<></>}
+      {rnd && roomId && rnd>0?<Result roomId={roomId}/>:<></>}
 
       {isAdmin && isAdmin ? (
         <>

@@ -91,7 +91,7 @@ const IDE = ({ userID, problemID }) => {
     script.async = true;
     document.body.appendChild(script);
 
-    getLanguageListTimeout = setTimeout(getLanguageList, 5000);
+    getLanguageListTimeout = setTimeout(getLanguageList, 7000);
 
     return cleanup;
   }, []);

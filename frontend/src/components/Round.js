@@ -21,6 +21,34 @@ const Round = () => {
   const [match, setMatches] = useState([]);
   const [gamer,setGamer] = useState("");
   const [rnd, setRnd] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(15);
+
+  const updateTime = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/tournament/getTime", { params: { roomId }});
+
+      const { startTime } = response.data;
+
+      const currentTime = new Date();
+
+      const differenceInMilliseconds = Math.abs(currentTime - new Date(startTime));
+
+      const differenceInSeconds = differenceInMilliseconds / 1000;
+
+      const timeLeftInSeconds = Math.floor(15 - differenceInSeconds);
+
+      setTimeLeft(timeLeftInSeconds >= 0 ? timeLeftInSeconds : 0);
+  
+      if (timeLeftInSeconds <= 0) {
+        navigate(`/room/${roomId}/tournament/match`);
+      }
+
+    } catch (error) {
+
+      console.error('Error fetching match:', error);
+
+    }
+  }; 
 
   useEffect(() => {
     user = JSON.parse(localStorage.getItem("user"));
@@ -30,25 +58,31 @@ const Round = () => {
     } else {
       const fetchData = async () => {
         try {
-          const response = await axios.post("http://localhost:5000/api/tournament/getTournamentDetails", { roomId });
+          const response = await axios.get("http://localhost:5000/api/tournament/getTournamentDetails", { params: { roomId }});
           const { Players, roundNo } = response.data;
           setRnd(roundNo);
           const userIndex = Players.findIndex(player => player.id === user.id);
           if (userIndex === -1) {
             console.log("Can't find user in players array");
+            navigate(`/room/${roomId}/tournament`);
             return;
           }
           setGamer(Players[userIndex]);
           const combined = await combinePairsAsync(Players);
           setMatches(combined);
+          
         } catch (error) {
           console.error('Error fetching round:', error);
         }
       };
-
+      
       fetchData();
+
+      const intervalId = setInterval(updateTime, 1000);
+      return () => clearInterval(intervalId);
+      
     }
-  }, [user, navigate, roomId]);
+  }, []);
 
 
   return (
@@ -58,6 +92,9 @@ const Round = () => {
       </div>
       <div>
         {gamer && <h1>All the best! {gamer?.name}</h1>}
+      </div>
+      <div>
+        <p>Match will start in : {timeLeft} seconds</p>
       </div>
       <div>
         <h2>Matches are :-</h2>

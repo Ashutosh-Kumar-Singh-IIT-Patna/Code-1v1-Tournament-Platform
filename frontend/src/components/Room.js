@@ -57,7 +57,7 @@ const Room = () => {
 
     fetchRoomDetails();
 
-    const interval = setInterval(fetchRoomDetails, 5000); // 10000 milliseconds = 10 seconds
+    const interval = setInterval(fetchRoomDetails, 5000);
 
     return () => clearInterval(interval); // Clean up the interval
 
@@ -91,6 +91,10 @@ const Room = () => {
   };
 
   const startTournament = () => {
+    if(participants.length==1){
+      alert("You need atleast 2 players!");
+      return;
+    }
     axios
       .post("http://localhost:5000/api/tournament/startTournament", {  roomId  } )
       .then((response) => {

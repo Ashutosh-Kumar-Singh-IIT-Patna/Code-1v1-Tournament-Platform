@@ -25,7 +25,6 @@ const CreateRoom = () => {
     axios
       .post("http://localhost:5000/api/rooms/create", { roomName, userName, userID })
       .then((response) => {
-        console.log(response.data);
         // Redirect to room page
         navigate(`/room/${response.data.roomId}`); // Use navigate function to redirect
       })

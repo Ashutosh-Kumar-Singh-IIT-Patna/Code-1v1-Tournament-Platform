@@ -52,15 +52,17 @@ app.delete("/api/rooms/deleteRoom", roomController.deleteRoom);
 
 //Routes for tournament
 app.post("/api/tournament/startTournament", tourController.startTournament);
-app.post("/api/tournament/getTournamentDetails", tourController.getTournamentDetails);
+app.get("/api/tournament/getTournamentDetails", tourController.getTournamentDetails);
 app.post("/api/tournament/startRound", tourController.startRound);
 app.post("/api/tournament/leaveTournament", tourController.leaveTournament);
 app.post("/api/tournament/endTournament", tourController.endTournament);
 app.post("/api/tournament/declareResult", tourController.declareResult);
+app.get("/api/tournament/getTime", tourController.getTime);
 
 //Routes for match
 app.get("/api/tournament/match/getProblemID", matchController.getProblemID);
 app.post("/api/tournament/match/submitCode", matchController.submitCode);
+app.post("/api/tournament/match/calculateResult", matchController.calculateResult);
 
 // Start server
 const PORT = 5000;
