@@ -1,5 +1,4 @@
 const express = require("express");
-const http = require("http");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -12,30 +11,21 @@ const { Mutex } = require('async-mutex');
 
 // Initialize Express app
 const app = express();
-app.use(cors(
-  {
-    origin: ["https://code-1v1-tournament-platform.vercel.app"],
-    methods: ["POST","GET","DELETE"],
-    credentials: true
-  }
-));
-const server = http.createServer(app);
+app.use(cors());
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    process.env.DB_URI,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('MongoDB connected');
+}).catch((err) => {
+  console.error('MongoDB connection error:', err);
+});
 
 // Define Express middleware
 app.use(express.static(__dirname + "/public"));
@@ -78,9 +68,13 @@ app.get("/api/tournament/match/getProblemID", async (req, res) => { const releas
 app.post("/api/tournament/match/submitCode", async (req, res) => { const release = await mutex.acquire(); try { matchController.submitCode(req, res); } finally { release(); } });
 app.post("/api/tournament/match/calculateResult", async (req, res) => { const release = await mutex.acquire(); try { matchController.calculateResult(req, res); } finally { release(); } });
 
+// Define the default route
+app.all('*', (req, res) => {
+  res.status(404).send({ message: 'Route not found' });
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
