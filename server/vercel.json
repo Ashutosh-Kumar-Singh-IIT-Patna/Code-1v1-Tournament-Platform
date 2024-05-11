@@ -3,7 +3,7 @@
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "server.js"
+        "dest": "index.js"
       },
       {
         "handle": "filesystem"
