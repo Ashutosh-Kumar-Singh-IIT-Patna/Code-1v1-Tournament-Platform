@@ -1,16 +1,17 @@
 const User = require("../models/User");
 const Room = require("../models/Room");
 
-let see="";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 // Function to execute code using the compiler API
 async function executeCode(script, language, stdin) {
-    const CLIENT_ID = "1f31295b368778686392d97287021531";
-    const CLIENT_SECRET = "1cd6eadce07ee7bdb51f6b72de180c8c2fdb33630746959ba5f5143ef2d75cb6";
 
     const execution_data = {
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
         script: script,
         language: language,
         stdin: stdin,
@@ -33,7 +34,6 @@ async function executeCode(script, language, stdin) {
 }
 
 exports.getProblemID = async (req, res) => {
-    see="getProblemID";
     try {
         const { userID } = req.query;
         const user = await User.findOne({ userID });
@@ -41,7 +41,6 @@ exports.getProblemID = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         const problemID=user.problemID;
-        see="";
         res.status(200).json({ problemID });
     } catch (error) {
         console.error(error);
@@ -50,7 +49,6 @@ exports.getProblemID = async (req, res) => {
 };
 
 exports.submitCode = async (req, res) => {
-    see="submitCode";
     try {
         const { script, language, userID, problemID } = req.body;
         
@@ -94,8 +92,6 @@ exports.submitCode = async (req, res) => {
         user.submissionTime = new Date();
         
         await user.save();
-
-        see="";
 
         res.status(200).json({ passedTestcases, totalTestcases });
     } catch (error) {
@@ -150,9 +146,6 @@ async function findResult(array) {
 
 exports.calculateResult = async (req, res) => {
     try {
-        if(see!==""){
-            console.log(see);
-        }
         const { roomId } = req.body;
         const room = await Room.findOne({ roomId });
         if (!room) {

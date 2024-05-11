@@ -15,10 +15,14 @@ const app = express();
 app.use(cors());
 const server = http.createServer(app);
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 // Connect to MongoDB
 mongoose
   .connect(
-    "mongodb+srv://ashutoshksingh2003:vgKLd3q4pyWAbryU@cluster0.9yvqiee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    process.env.DB_URL,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -42,48 +46,30 @@ app.use(
 const mutex = new Mutex();
 
 // Routes for user authentication
-// app.post("/api/auth/signup", authController.signup);
 app.post("/api/auth/signup", async (req, res) => { const release = await mutex.acquire(); try { authController.signup(req, res); } finally { release(); } });
-// app.post("/api/auth/login", authController.login);
 app.post("/api/auth/login", async (req, res) => { const release = await mutex.acquire(); try { authController.login(req, res); } finally { release(); } });
-// app.get("/api/auth/getUserName", authController.getUserName);
 app.get("/api/auth/getUserName", async (req, res) => { const release = await mutex.acquire(); try { authController.getUserName(req, res); } finally { release(); } });
 
 // Routes for room operations
-// app.post("/api/rooms/create", roomController.createRoom);
 app.post("/api/rooms/create", async (req, res) => { const release = await mutex.acquire(); try { roomController.createRoom(req, res); } finally { release(); } });
-// app.post("/api/rooms/join", roomController.joinRoom);
 app.post("/api/rooms/join", async (req, res) => { const release = await mutex.acquire(); try { roomController.joinRoom(req, res); } finally { release(); } });
-// app.post("/api/rooms/leave", roomController.leaveRoom);
 app.post("/api/rooms/leave", async (req, res) => { const release = await mutex.acquire(); try { roomController.leaveRoom(req, res); } finally { release(); } });
-// app.get("/api/rooms/getRoomDetails", roomController.getRoomDetails);
 app.get("/api/rooms/getRoomDetails", async (req, res) => { const release = await mutex.acquire(); try { roomController.getRoomDetails(req, res); } finally { release(); } });
-// app.delete("/api/rooms/deleteRoom", roomController.deleteRoom);
 app.delete("/api/rooms/deleteRoom", async (req, res) => { const release = await mutex.acquire(); try { roomController.deleteRoom(req, res); } finally { release(); } });
 
 //Routes for tournament
-// app.post("/api/tournament/startTournament", tourController.startTournament);
 app.post("/api/tournament/startTournament", async (req, res) => { const release = await mutex.acquire(); try { tourController.startTournament(req, res); } finally { release(); } });
-// app.get("/api/tournament/getTournamentDetails", tourController.getTournamentDetails);
 app.get("/api/tournament/getTournamentDetails", async (req, res) => { const release = await mutex.acquire(); try { tourController.getTournamentDetails(req, res); } finally { release(); } });
-// app.post("/api/tournament/startRound", tourController.startRound);
 app.post("/api/tournament/startRound", async (req, res) => { const release = await mutex.acquire(); try { tourController.startRound(req, res); } finally { release(); } });
-// app.post("/api/tournament/leaveTournament", tourController.leaveTournament);
 app.post("/api/tournament/leaveTournament", async (req, res) => { const release = await mutex.acquire(); try { tourController.leaveTournament(req, res); } finally { release(); } });
-// app.post("/api/tournament/endTournament", tourController.endTournament);
 app.post("/api/tournament/endTournament", async (req, res) => { const release = await mutex.acquire(); try { tourController.endTournament(req, res); } finally { release(); } });
-// app.post("/api/tournament/declareResult", tourController.declareResult);
 app.post("/api/tournament/declareResult", async (req, res) => { const release = await mutex.acquire(); try { tourController.declareResult(req, res); } finally { release(); } });
-// app.get("/api/tournament/getTime", tourController.getTime);
 app.get("/api/tournament/getTime", async (req, res) => { const release = await mutex.acquire(); try { tourController.getTime(req, res); } finally { release(); } });
 
 
 //Routes for match
-// app.get("/api/tournament/match/getProblemID", matchController.getProblemID);
 app.get("/api/tournament/match/getProblemID", async (req, res) => { const release = await mutex.acquire(); try { matchController.getProblemID(req, res); } finally { release(); } });
-// app.post("/api/tournament/match/submitCode", matchController.submitCode);
 app.post("/api/tournament/match/submitCode", async (req, res) => { const release = await mutex.acquire(); try { matchController.submitCode(req, res); } finally { release(); } });
-// app.post("/api/tournament/match/calculateResult", matchController.calculateResult);
 app.post("/api/tournament/match/calculateResult", async (req, res) => { const release = await mutex.acquire(); try { matchController.calculateResult(req, res); } finally { release(); } });
 
 
