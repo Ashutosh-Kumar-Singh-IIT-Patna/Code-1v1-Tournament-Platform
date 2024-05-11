@@ -12,7 +12,13 @@ const { Mutex } = require('async-mutex');
 
 // Initialize Express app
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["https://code-1v1-tournament-platform.vercel.app"],
+    methods: ["POST","GET","DELETE"],
+    credentials: true
+  }
+));
 const server = http.createServer(app);
 
 import dotenv from 'dotenv';
@@ -74,7 +80,7 @@ app.post("/api/tournament/match/calculateResult", async (req, res) => { const re
 
 
 // Start server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
