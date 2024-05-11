@@ -21,7 +21,7 @@ const IDE = ({ userID, problemID }) => {
         const script = event.data.script;
         try {
           // Send script, language, userID, and problemID to backend
-          const response = await axios.post('http://localhost:5000/api/tournament/match/submitCode', {
+          const response = await axios.post('https://code-tournament-platform.vercel.app/api/tournament/match/submitCode', {
             script,
             language,
             userID,

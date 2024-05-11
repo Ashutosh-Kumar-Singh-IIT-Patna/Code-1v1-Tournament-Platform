@@ -28,7 +28,7 @@ const Round = () => {
     } else {
       const fetchData = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/api/tournament/getTournamentDetails", { params: { roomId }});
+          const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
           const { Players, roundNo, Admin,isResultCalculated } = response.data;
           setResultCalculated(isResultCalculated);
           if(Admin === user.id){
@@ -46,7 +46,7 @@ const Round = () => {
           setOpponentName(Players[oppoIndex]?.name || 'Bot');
 
           const ID=user.id;
-          const res = await axios.get("http://localhost:5000/api/tournament/match/getProblemID",  { params: { ID }});
+          const res = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/match/getProblemID",  { params: { ID }});
           const {problemID} = res.data;
           setPID(problemID);
 
@@ -63,7 +63,7 @@ const Round = () => {
   useEffect(() => {
     const fetchTime = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/tournament/getTime", { params: { roomId } });
+        const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTime", { params: { roomId } });
         const { startTime } = response.data;
         const currentTime = new Date();
         const differenceInMilliseconds = Math.abs(currentTime - new Date(startTime));
@@ -72,7 +72,7 @@ const Round = () => {
         if (timeLeftInMilliseconds <= 0) {
           if (!resultCalculated) {
             try {
-              await axios.post("http://localhost:5000/api/tournament/match/calculateResult", { roomId });
+              await axios.post("https://code-tournament-platform.vercel.app/api/tournament/match/calculateResult", { roomId });
               setResultCalculated(true);
             } catch (error) {
               console.error('Error:', error);
