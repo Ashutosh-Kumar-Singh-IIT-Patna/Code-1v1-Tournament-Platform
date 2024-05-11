@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const Room = require("../models/Room");
 
+let see="";
+
 // Function to execute code using the compiler API
 async function executeCode(script, language, stdin) {
     const CLIENT_ID = "1f31295b368778686392d97287021531";
@@ -31,6 +33,7 @@ async function executeCode(script, language, stdin) {
 }
 
 exports.getProblemID = async (req, res) => {
+    see="getProblemID";
     try {
         const { userID } = req.query;
         const user = await User.findOne({ userID });
@@ -38,6 +41,7 @@ exports.getProblemID = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         const problemID=user.problemID;
+        see="";
         res.status(200).json({ problemID });
     } catch (error) {
         console.error(error);
@@ -46,6 +50,7 @@ exports.getProblemID = async (req, res) => {
 };
 
 exports.submitCode = async (req, res) => {
+    see="submitCode";
     try {
         const { script, language, userID, problemID } = req.body;
         
@@ -89,6 +94,8 @@ exports.submitCode = async (req, res) => {
         user.submissionTime = new Date();
         
         await user.save();
+
+        see="";
 
         res.status(200).json({ passedTestcases, totalTestcases });
     } catch (error) {
@@ -143,6 +150,9 @@ async function findResult(array) {
 
 exports.calculateResult = async (req, res) => {
     try {
+        if(see!==""){
+            console.log(see);
+        }
         const { roomId } = req.body;
         const room = await Room.findOne({ roomId });
         if (!room) {

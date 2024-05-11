@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../css/Result.css";
 
-const Result = ({roomId}) => {
+const Result = ({roomId,rnd}) => {
   const [newPlayers, setNewPlayers] = useState([]);
   const [oldPlayers, setOldPlayers] = useState([]);
   const [matchResults, setMatchResults] = useState([]);
@@ -19,7 +20,7 @@ const Result = ({roomId}) => {
     };
   
     fetchData();
-  }, [roomId]);
+  }, [roomId,rnd]);
 
   useEffect(() => {
     const calculateMatchResults = () => {
@@ -42,16 +43,29 @@ const Result = ({roomId}) => {
   }, [oldPlayers, newPlayers]);
 
   return (
-    <div>
-      <h2>Last Round Results:</h2>
-      <ul>
-        {matchResults?.map((match, index) => (
-          <li key={index}>
-            {match[0]} vs {match[1]}: Winner - {match[2]}
-          </li>
-        ))}
-      </ul>
+    <>
+    <center style={{marginTop:"2rem"}}>
+      <h2>Round - {rnd} Results: </h2>
+    </center>
+    <div className="match-results-table">
+      <table className="match-results-table__table">
+        <thead>
+          <tr>
+            <th className="match-results-table__header">Match</th>
+            <th className="match-results-table__header">Winner</th>
+          </tr>
+        </thead>
+        <tbody>
+          {matchResults?.map((match, index) => (
+            <tr key={index}>
+              <td className="match-results-table__cell">{match[0]} vs {match[1]}</td>
+              <td className="match-results-table__cell">{match[2]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+    </>
   )
 }
 

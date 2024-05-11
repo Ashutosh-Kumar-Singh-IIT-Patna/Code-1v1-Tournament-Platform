@@ -16,8 +16,8 @@ const Round = () => {
   const [rnd, setRnd] = useState(null);
   const [pID,setPID] = useState("");
   const [isAdmin,setIsAdmin] = useState(false);
-  const [minutes, setMinutes] = useState("05");
-  const [seconds, setSeconds] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("30");
   const [resultCalculated,setResultCalculated] = useState(true);
 
   useEffect(() => {
@@ -92,23 +92,38 @@ const Round = () => {
   
     fetchTime();
   
-    const intervalId = setInterval(fetchTime, 1000);
+    const intervalId = setInterval(fetchTime, 5000);
     return () => clearInterval(intervalId);
   }, [roomId, resultCalculated]);
 
   return (
-    <>
+    <div style={{ 
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "94.5vh",
+      background: "linear-gradient(135deg, #2980b9, #2c3e50)",
+      color: "#fff",
+      fontFamily: "'Roboto', sans-serif",
+      padding: "20px"
+    }}>
       <center>
         {rnd && <h1>Round No. - {rnd}</h1>}
-        <p>Time Left- {minutes}:{seconds}</p>
+        <div style={{ marginTop:"1rem",fontSize: '20px', fontWeight: 'bold', color: '#ff4f58', padding: '5px' }}>
+          <p>Time Left- {minutes}:{seconds} (Time changes every 5 seconds)</p>
+        </div>
       </center>
-      <center>
-        <span style={{ fontSize: '30px' }}>{gamer?.name}</span> vs <span style={{ fontSize: '18px' }}>{opponentName}</span>
-      </center>
+      <div style={{ marginTop:"1rem",textAlign: 'center', backgroundColor: '#f0f0f0', padding: '15px' }}>
+        <span style={{ fontSize: '30px', fontWeight: 'bold', color: '#333' }}>{gamer?.name}</span> 
+        <span style={{ fontSize: '18px', color: '#666', margin: '0 10px' }}>vs</span> 
+        <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#333' }}>{opponentName}</span>
+      </div>
+
       {pID === "" ? (
           <></>
       ) : (
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", width:"100%" }}>
             <div style={{ flex: 1 }}>
               <Problem problemId={pID} />
             </div>
@@ -118,7 +133,7 @@ const Round = () => {
           </div>
       )}
 
-    </>
+    </div>
   );
 };
 

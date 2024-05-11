@@ -19,7 +19,6 @@ const IDE = ({ userID, problemID }) => {
       }
       if (event.origin === "https://www.jdoodle.com" && event.data.script) {
         const script = event.data.script;
-
         try {
           // Send script, language, userID, and problemID to backend
           const response = await axios.post('http://localhost:5000/api/tournament/match/submitCode', {
@@ -58,13 +57,13 @@ const IDE = ({ userID, problemID }) => {
     };
 
     const setupListeners = () => {
-      window.addEventListener("message", handleMessage);
+      window?.addEventListener("message", handleMessage);
     };
 
     setupListeners();
 
     const cleanup = () => {
-      window.removeEventListener("message", handleMessage);
+      window?.removeEventListener("message", handleMessage);
     };
 
     return cleanup;
@@ -76,7 +75,8 @@ const IDE = ({ userID, problemID }) => {
     let getLanguageListTimeout;
 
     const cleanup = () => {
-      if (script) {
+      pymParent?.remove();
+      if (script && document.body.contains(script)) {
         document.body.removeChild(script);
       }
       clearTimeout(getLanguageListTimeout);
@@ -120,9 +120,30 @@ const IDE = ({ userID, problemID }) => {
   return (
     <div>
       <ToastContainer />
-      <div id="language-dropdown-container">
-        <h3>Select Language:</h3>
-        <select id="languageDropdown" onChange={handleLanguageChange}>
+        <div
+        style={{ marginTop:"3rem",fontFamily: 'Arial, sans-serif', width:"90%",marginLeft:"auto", marginRight:"auto", padding: "20px",
+        borderRadius: "8px", // Rounded corners for a softer look
+        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)" }}
+        >
+        <center style={{ fontSize: '40px', fontWeight: 'bold', color: '#fff', marginBottom: '20px' }}>Code Editor</center>
+        <div 
+          id="language-dropdown-container" style={{ display: "flex", // Make the container flex
+          alignItems: "center", // Align items vertically in the center
+          justifyContent: "center", // Center items horizontally
+          textAlign: "center",
+          marginBottom:"1rem",
+          marginTop:"2rem"
+        }}>
+        <h3 style={{ margin: "0 10px 0 0" }}>Select Language:</h3>
+        <select id="languageDropdown" onChange={handleLanguageChange} style={{
+          padding: "8px", // Adding padding to make it visually pleasing
+          fontSize: "16px", // Increasing font size for better readability
+          borderRadius: "4px", // Rounded corners for select box
+          border: "1px solid #ccc", // Adding a border
+          backgroundColor: "#fff", // Setting a white background
+          boxShadow: "0px 2px 5px 0px rgba(0,0,0,0.1)", // Adding a subtle box shadow
+          width: "100px",
+        }}>
           {languages?.map((language, index) => (
             <option key={index} value={language.id}>
               {language.language}
@@ -131,10 +152,52 @@ const IDE = ({ userID, problemID }) => {
         </select>
       </div>
       <div id="jdoodle-container"></div>
-      <div>Note:</div>
-      <div>1. Latest submission is taken into consideration while comparing.</div>
-      <div>2. You need to write something in the IDE before submitting.</div>
-      <center><button onClick={submitCode}>Submit Code</button></center>
+      <div id="note-container" style={{
+          marginTop:"2rem",
+          backgroundColor: "#2c3e50", // Dark blue background
+          color: "#fff", // White text color
+          padding: "20px", // Padding for spacing
+          borderRadius: "8px", // Rounded corners for a softer look
+          maxWidth: "400px", // Limiting the width for better readability
+          margin: "0 auto", // Centering the container horizontally
+        }}>
+          <div style={{ fontWeight: "bold", marginBottom: "10px" }}>Note:</div> {/* Bold text */}
+          <ul style={{ marginBottom: "10px" }}>
+            <li>Latest submission is taken into consideration while comparing.</li>
+            <br></br>
+            <li>You need to write something in the Code Editor before submitting, otherwise you won't get any results.</li>
+          </ul>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button style={{
+              marginTop: "2rem",
+              marginBottom:"1.5rem",
+              textDecoration: "none",
+              color: "#fff", /* Change text color to white */
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              textShadow: "1px 1px 2px rgba(0, 0, 0, 0.6)",
+              padding: "1rem",
+              backgroundColor: "#16a085",
+              border: "none",
+              borderRadius: "10px",
+              cursor: "pointer",
+              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+              transition: "background-color 0.3s ease, transform 0.2s ease",
+              display: "inline-block",
+              marginLeft:"auto",
+              marginRight:"auto"
+            }} onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#1abc9c";
+              e.target.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "#16a085";
+              e.target.style.transform = "scale(1)";
+            }} onClick={submitCode}>Submit Code</button>
+          </div>
+      </div>
     </div>
   );
 };

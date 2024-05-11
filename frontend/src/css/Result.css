@@ -1,0 +1,30 @@
+  .match-results-table {
+    width: 100%;
+  }
+  
+  .match-results-table__table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+  }
+  
+  .match-results-table__header {
+    background-color: #e5e23d;
+    border: 2px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    color:rgb(18, 18, 18)
+  }
+  
+  .match-results-table__cell {
+    border: 2px solid #ddd;
+    padding: 5px;
+  }
+
+  .match-results-table__table tbody tr:hover {
+    background-color: #041d36;
+  }
+
+  

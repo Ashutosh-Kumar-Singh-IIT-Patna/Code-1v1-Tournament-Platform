@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import "../css/Result.css";
 
 const FinalResult = () => {
   let { user } = useAuth();
@@ -47,6 +48,7 @@ const FinalResult = () => {
           return;
         }
       } catch (error) {
+        navigate(`/room/${roomId}`);
         console.error('Error checking end:', error);
       }
     };
@@ -102,37 +104,113 @@ const FinalResult = () => {
   };
 
   return (
-    <div>
+    <div style={{ 
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: "94.5vh",
+      background: "linear-gradient(135deg, #2980b9, #2c3e50)",
+      color: "#fff",
+      fontFamily: "'Roboto', sans-serif",
+      padding: "20px",
+      textAlign: "center"
+    }}>
       {matchResults && (
-        <h1>
-          Congratulations to{" "}
-          {matchResults
-            .filter(match => match[2] !== 'Bot') // Filter out 'Bot' winners
-            .map((match, index) => (
-              <span key={index}>
-                {match[2]}
-                {index !== matchResults.length - 1 ? (
-                  index === matchResults.length - 2 ? " and " : ", "
-                ) : ""}
-              </span>
-            ))}
-        </h1>
+        <h1 style={{ marginTop: "5rem", fontSize:"40px",fontFamily: "Arial, sans-serif", textAlign: "center", color: "white" }}>
+        Congratulations to{" "}
+        {matchResults
+          .filter(match => match[2] !== 'Bot') // Filter out 'Bot' winners
+          .map((match, index) => (
+            <span key={index} style={{ fontSize:"40px", fontWeight: "bold", color: "#FFA500" }}>
+              {match[2]}
+              {index !== matchResults.length - 1 ? (
+                index === matchResults.length - 2 ? " and " : ", "
+              ) : "!"}
+            </span>
+          ))}
+      </h1>
+      
+      
       )}
 
-      <h2>Final Round Results:</h2>
-      <ul>
-        {matchResults?.map((match, index) => (
-          <li key={index}>
-            {match[0]} vs {match[1]}: Winner - {match[2]}
-          </li>
-        ))}
-      </ul>
+      <center style={{marginTop:"3rem"}}>
+        <h2>Final Round Results: </h2>
+      </center>
+      <div className="match-results-table" style={{width:"50%"}}>
+        <table className="match-results-table__table" style={{marginTop:"1rem"}}>
+          <thead>
+            <tr>
+              <th className="match-results-table__header">Match</th>
+              <th className="match-results-table__header">Winner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {matchResults?.map((match, index) => (
+              <tr key={index}>
+                <td className="match-results-table__cell">{match[0]} vs {match[1]}</td>
+                <td className="match-results-table__cell">{match[2]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {isAdmin && isAdmin ? (
-        <>
-          <button onClick={endTournament}>End Tournament</button>
-        </>
+        <div style={{position:"absloute",marginTop: "15rem"
+          }}
+          >
+          <button style={{
+            textDecoration: "none",
+            color: "#fff", /* Change text color to white */
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.6)",
+            padding: "1rem",
+            backgroundColor: "#e74c3c", // Red color
+            border: "none",
+            borderRadius: "10px",
+            cursor: "pointer",
+            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+            transition: "background-color 0.3s ease, transform 0.2s ease",
+            display: "inline-block",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = "#c0392b"; // Darker shade of red on hover
+            e.target.style.transform = "scale(1.05)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = "#e74c3c";
+            e.target.style.transform = "scale(1)";
+          }} onClick={endTournament}>End Tournament</button>
+          </div>
       ) : (
-        <button onClick={leaveTournament}>Leave Tournament</button>
+        <div style={{position:"absloute",marginTop: "15rem"
+        }}
+        >
+        <button style={{
+          textDecoration: "none",
+          color: "#fff", /* Change text color to white */
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          textShadow: "1px 1px 2px rgba(0, 0, 0, 0.6)",
+          padding: "1rem",
+          backgroundColor: "#e74c3c", // Red color
+          border: "none",
+          borderRadius: "10px",
+          cursor: "pointer",
+          boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+          transition: "background-color 0.3s ease, transform 0.2s ease",
+          display: "inline-block",
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#c0392b"; // Darker shade of red on hover
+          e.target.style.transform = "scale(1.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "#e74c3c";
+          e.target.style.transform = "scale(1)";
+        }} onClick={leaveTournament}>Leave Tournament</button>
+        </div>
       )}
     </div>
   )
