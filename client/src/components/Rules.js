@@ -49,7 +49,7 @@ const Rules = () => {
         </li>
         <li><strong>Determining Winners:</strong>
           <ul>
-            <li>The winner of each 1v1 matchup is determined based on the correctness of their code or submission time (if test cases passed are equal).</li>
+            <li>The winner of each 1v1 matchup is determined based on the correctness of their code or submission time (if number of testcases passed are equal).</li>
           </ul>
         </li>
         <li><strong>Advancing to Next Round:</strong>
