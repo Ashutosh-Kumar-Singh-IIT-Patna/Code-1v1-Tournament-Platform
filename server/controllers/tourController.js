@@ -16,12 +16,16 @@ async function assignProblem(array) {
         const ID = array[i].id;
         const user = await User.findOne({ _id:ID });
         user.problemID = paddedNumber;
+        user.numberOfTestsPassed = 0;
+        user.submissionTime = null;
         await user.save();
         i++;
         if(i<array.length){
             const ID1 = array[i].id;
             const user1 = await User.findOne({ _id:ID1 });
             user1.problemID = paddedNumber;
+            user1.numberOfTestsPassed = 0;
+            user1.submissionTime = null;
             await user1.save();
         }
     }
