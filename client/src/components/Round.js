@@ -35,7 +35,7 @@ const Round = () => {
 
       const differenceInSeconds = differenceInMilliseconds / 1000;
 
-      const timeLeftInSeconds = Math.floor(5 - differenceInSeconds);
+      const timeLeftInSeconds = Math.floor(60 - differenceInSeconds);
 
       setTimeLeft(timeLeftInSeconds >= 0 ? timeLeftInSeconds : 0);
   
