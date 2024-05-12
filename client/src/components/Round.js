@@ -25,7 +25,7 @@ const Round = () => {
 
   const updateTime = async () => {
     try {
-      const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTime", { params: { roomId }});
+      const response = await axios.get("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/getTime", { params: { roomId }});
 
       const { startTime } = response.data;
 
@@ -58,7 +58,7 @@ const Round = () => {
     } else {
       const fetchData = async () => {
         try {
-          const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
+          const response = await axios.get("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
           const { Players, roundNo } = response.data;
           setRnd(roundNo);
           const userIndex = Players.findIndex(player => player.id === user.id);

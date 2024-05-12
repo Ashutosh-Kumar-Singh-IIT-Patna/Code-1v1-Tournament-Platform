@@ -28,7 +28,7 @@ const Room = () => {
           // If user data does not exist, redirect to login page
           navigate("/login");
         }
-        const response = await axios.get("https://code-tournament-platform.vercel.app/api/rooms/getRoomDetails", { params: { roomId } });
+        const response = await axios.get("https://code-1v1-tournament-platform-backend.vercel.app/api/rooms/getRoomDetails", { params: { roomId } });
         const { name, admin, participants, isStarted, players } = response.data.room;
 
         setAdmi(admin);
@@ -65,7 +65,7 @@ const Room = () => {
 
   const handleLeaveRoom = () => {
     axios
-      .post("https://code-tournament-platform.vercel.app/api/rooms/leave", { roomId, userID })
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/rooms/leave", { roomId, userID })
       .then((response) => {
         // console.log(response.data);
         // console.log("joining room");
@@ -80,7 +80,7 @@ const Room = () => {
 
   const handleDeleteRoom = () => {
     axios
-      .delete("https://code-tournament-platform.vercel.app/api/rooms/deleteRoom", { data: { roomId } } )
+      .delete("https://code-1v1-tournament-platform-backend.vercel.app/api/rooms/deleteRoom", { data: { roomId } } )
       .then((response) => {
         navigate(`/home`); // Use navigate function to redirect
       })
@@ -96,7 +96,7 @@ const Room = () => {
       return;
     }
     axios
-      .post("https://code-tournament-platform.vercel.app/api/tournament/startTournament", {  roomId  } )
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/startTournament", {  roomId  } )
       .then((response) => {
         navigate(`/room/${roomId}/tournament`); // Use navigate function to redirect
       })

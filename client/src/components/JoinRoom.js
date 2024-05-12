@@ -31,7 +31,7 @@ const JoinRoom = () => {
       return;
     }
     axios
-      .post("https://code-tournament-platform.vercel.app/api/rooms/join", { roomId, userName, userID })
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/rooms/join", { roomId, userName, userID })
       .then((response) => {
         // console.log(response.data);
         // console.log("joining room");

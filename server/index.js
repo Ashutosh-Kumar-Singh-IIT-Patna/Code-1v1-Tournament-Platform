@@ -11,7 +11,13 @@ const { Mutex } = require('async-mutex');
 
 // Initialize Express app
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["https://code-1v1-tournament-platform.vercel.app"],
+    methods: ["POST", "GET", "DELETE", "ALL"],
+    credentials: true
+  }
+));
 
 import dotenv from 'dotenv';
 
@@ -70,7 +76,6 @@ app.post("/api/tournament/match/calculateResult", async (req, res) => { const re
 
 // Define the default route
 app.all('*', (req, res) => {
-  // res.json("Hello World");
   res.status(404).send({ message: 'Route not found' });
 });
 

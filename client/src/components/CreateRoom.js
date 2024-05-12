@@ -31,7 +31,7 @@ const CreateRoom = () => {
       return;
     }
     axios
-      .post("https://code-tournament-platform.vercel.app/api/rooms/create", { roomName, userName, userID })
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/rooms/create", { roomName, userName, userID })
       .then((response) => {
         // Redirect to room page
         navigate(`/room/${response.data.roomId}`); // Use navigate function to redirect

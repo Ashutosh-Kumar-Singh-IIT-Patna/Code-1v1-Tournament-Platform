@@ -28,7 +28,7 @@ const Tournament = () => {
         if (!user) {
           navigate("/login");
         }
-        const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
+        const response = await axios.get("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
         const { Participants, Players, roundNo, RoomName, Admin, isStarted, isDeclared, isRunning } = response.data;
 
         setStarted(isStarted);
@@ -94,7 +94,7 @@ const Tournament = () => {
 
   const leaveTournament = async () => {
     await axios
-      .post("https://code-tournament-platform.vercel.app/api/tournament/leaveTournament", { roomId, userID })
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/leaveTournament", { roomId, userID })
       .then((response) => {
         navigate(`/room/${roomId}`);
       })
@@ -109,7 +109,7 @@ const Tournament = () => {
       return;
     }
     await axios
-      .post("https://code-tournament-platform.vercel.app/api/tournament/endTournament",  { roomId } )
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/endTournament",  { roomId } )
       .then((response) => {
         navigate(`/room/${roomId}`);
       })
@@ -124,7 +124,7 @@ const Tournament = () => {
       return;
     }
     await axios
-      .post("https://code-tournament-platform.vercel.app/api/tournament/startRound", {  roomId  } )
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/startRound", {  roomId  } )
       .then((response) => {
         if(isPlaying)
         navigate(`/room/${roomId}/tournament/round`); // Use navigate function to redirect
@@ -146,7 +146,7 @@ const Tournament = () => {
       return;
     }
     await axios
-      .post("https://code-tournament-platform.vercel.app/api/tournament/declareResult", {  roomId  } )
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/declareResult", {  roomId  } )
       .then((response) => {
         navigate(`/room/${roomId}/tournament/finalresult`); // Use navigate function to redirect
       })

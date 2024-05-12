@@ -10,7 +10,7 @@ const Result = ({roomId,rnd}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://code-tournament-platform.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
+        const response = await axios.get("https://code-1v1-tournament-platform-backend.vercel.app/api/tournament/getTournamentDetails", { params: { roomId }});
         const { OldPlayers, Players } = response.data;
         setOldPlayers(OldPlayers);
         setNewPlayers(Players);

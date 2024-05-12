@@ -22,7 +22,7 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
     axios
-      .post("https://code-tournament-platform.vercel.app/api/auth/signup", { name, email, password })
+      .post("https://code-1v1-tournament-platform-backend.vercel.app/api/auth/signup", { name, email, password })
       .then((response) => {
         console.log(response.data);
         // Redirect to login page upon successful signup
