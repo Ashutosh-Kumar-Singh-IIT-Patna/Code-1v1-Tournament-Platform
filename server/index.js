@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const session = require("express-session");
 const authController = require("./controllers/authController");
 const roomController = require("./controllers/roomController");
@@ -28,9 +28,10 @@ mongoose.connect(process.env.DB_URI, {
 });
 
 // Define Express middleware
-app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(express.static(__dirname + "/public"));
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+app.use(express.json());
 app.use(
   session({
     secret: "secret",
@@ -70,7 +71,8 @@ app.post("/api/tournament/match/calculateResult", async (req, res) => { const re
 
 // Define the default route
 app.all('*', (req, res) => {
-  res.status(404).send({ message: 'Route not found' });
+  // res.status(404).send({ message: 'Route not found' });
+  res.json("Hello World");
 });
 
 // Start server
