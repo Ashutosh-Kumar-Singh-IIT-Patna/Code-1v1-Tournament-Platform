@@ -14,7 +14,10 @@ dotenv.config();
 
 // Initialize Express app
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ["https://code-1v1-tournament-platform.vercel.app"],
+  methods: ["*"]
+}));
 
 // Define Express middleware
 app.use(express.static(__dirname + "/public"));
