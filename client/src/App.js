@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import axios from "axios";
 import { AuthProvider } from "./components/AuthContext"; // Import your AuthProvider
 import Loading from "./components/Loading"; // Import your Loading component
 const Signup = React.lazy(() => import("./components/Signup"));
@@ -15,7 +14,6 @@ const Round = React.lazy(() => import("./components/Round"));
 const FinalResult = React.lazy(() => import("./components/FinalResult"));
 
 function App() {
-  axios.defaults.withCredentials = true;
   return (
     <AuthProvider>
       <Router>

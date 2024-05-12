@@ -13,8 +13,7 @@ const { Mutex } = require('async-mutex');
 const app = express();
 app.use(cors({
   origin: ["https://code-1v1-tournament-platform.vercel.app"],
-  methods: ["*"],
-  credentials: true
+  methods: ["*"]
 }));
 
 
