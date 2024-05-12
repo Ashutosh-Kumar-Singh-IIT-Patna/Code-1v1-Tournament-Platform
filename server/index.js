@@ -64,7 +64,6 @@ app.post("/api/tournament/endTournament", async (req, res) => { const release = 
 app.post("/api/tournament/declareResult", async (req, res) => { const release = await mutex.acquire(); try { tourController.declareResult(req, res); } finally { release(); } });
 app.get("/api/tournament/getTime", async (req, res) => { const release = await mutex.acquire(); try { tourController.getTime(req, res); } finally { release(); } });
 
-
 //Routes for match
 app.get("/api/tournament/match/getProblemID", async (req, res) => { const release = await mutex.acquire(); try { matchController.getProblemID(req, res); } finally { release(); } });
 app.post("/api/tournament/match/submitCode", async (req, res) => { const release = await mutex.acquire(); try { matchController.submitCode(req, res); } finally { release(); } });
