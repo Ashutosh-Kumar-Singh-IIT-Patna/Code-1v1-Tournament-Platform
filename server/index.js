@@ -70,7 +70,8 @@ app.post("/api/tournament/match/calculateResult", async (req, res) => { const re
 
 // Define the default route
 app.all('*', (req, res) => {
-  res.status(404).send({ message: 'Route not found' });
+  // res.status(404).send({ message: 'Route not found' });
+  res.json("Hello World");
 });
 
 // Start server
