@@ -1,0 +1,26 @@
+.rules-container {
+  width: 850px; /* Adjust according to your design */
+  /* Center the div horizontally */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rules-container ul {
+  padding: 20px;
+}
+
+.rules-container ul > li {
+  margin-bottom: 20px;
+}
+
+.rules-container ul > li > ul {
+  padding-left: 20px;
+}
+
+.rules-container ul > li > ul >li {
+  line-height: 30px;
+}
+
+.rules-container strong {
+  font-weight: bold;
+}

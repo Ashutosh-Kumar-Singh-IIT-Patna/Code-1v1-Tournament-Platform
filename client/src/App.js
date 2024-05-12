@@ -2,7 +2,10 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./components/AuthContext"; // Import your AuthProvider
 import Loading from "./components/Loading"; // Import your Loading component
+import NavBar from "./components/NavBar";
 const Signup = React.lazy(() => import("./components/Signup"));
+const ContactUs = React.lazy(() => import("./components/ContactUs"));
+const Rules = React.lazy(() => import("./components/Rules"));
 const Login = React.lazy(() => import("./components/Login"));
 const Home = React.lazy(() => import("./components/Home"));
 const CreateRoom = React.lazy(() => import("./components/CreateRoom"));
@@ -18,11 +21,14 @@ function App() {
     <AuthProvider>
       <Router>
         <Suspense fallback={<Loading />}>
+          <NavBar />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/rules" element={<Rules />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/create-room" element={<CreateRoom />} />
             <Route path="/join-room" element={<JoinRoom />} />
             <Route path="/room/:roomId" element={<Room />} />
