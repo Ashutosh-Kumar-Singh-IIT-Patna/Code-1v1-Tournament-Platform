@@ -8,6 +8,9 @@ const tourController = require("./controllers/tourController");
 const matchController = require("./controllers/matchController");
 const cors = require("cors");
 const { Mutex } = require('async-mutex');
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Initialize Express app
 const app = express();
@@ -15,21 +18,6 @@ app.use(cors({
   origin: ["https://code-1v1-tournament-platform.vercel.app"],
   methods: ["*"]
 }));
-
-
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-// Connect to MongoDB
-mongoose.connect(process.env.DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('MongoDB connected');
-}).catch((err) => {
-  console.error('MongoDB connection error:', err);
-});
 
 // Define Express middleware
 app.use(express.static(__dirname + "/public"));
@@ -42,6 +30,16 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+// Connect to MongoDB
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('MongoDB connected');
+}).catch((err) => {
+  console.error('MongoDB connection error:', err);
+});
 
 const mutex = new Mutex();
 
