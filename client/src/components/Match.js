@@ -67,7 +67,7 @@ const Round = () => {
         const { startTime } = response.data;
         const currentTime = new Date();
         const differenceInMilliseconds = Math.abs(currentTime - new Date(startTime));
-        const fifteenMinutesInMilliseconds = 0.5 * 60 * 1000;
+        const fifteenMinutesInMilliseconds = 10 * 60 * 1000;
         const timeLeftInMilliseconds = fifteenMinutesInMilliseconds - differenceInMilliseconds;
         if (timeLeftInMilliseconds <= 0) {
           if (!resultCalculated) {
